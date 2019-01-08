@@ -1,3 +1,4 @@
+'use strict'
 const nodemailer = require('nodemailer');
 const moment = require('moment');
 require('dotenv').config()
@@ -23,34 +24,26 @@ class Mailer {
         this.data = GLOBAL_DATA
     }
     getRandomMessage(){ 
-        let today = new Date(),
-        m1 = moment(this.old_date), m2 = moment(today)
+        let today = new Date(), m1 = moment(this.old_date), m2 = moment(today)
         let dif = Math.abs(m1.diff(m2, 'days'))
-        console.log(dif)
-        return `Welcome jaju.. Happy Happy Happy morning.. Dont be scared inside... I am near you only... Today is your ${dif}th day... Waiting to hold you in my hands. Come soon`
+        return `Welcome jaju.. Happy Happy Happy morning.. Dont be scared inside... I am near you only... Today is your ${dif}th day... Waiting to hold you in my hands. Come soon...`
     }
     sendMail(){ 
-        let random = Math.floor(Math.random() * 6)
-        console.log(this.data[random])
+        let random = Math.floor(Math.random() * 5)
         var message = {
             from: this.from,
             to: this.from,
-            subject: `<b><i>Manju + Raja = JAJU</i></b>`,
+            subject: `Manju + Raja = JAJU`,
             html: `
                 <div>
-                    <p> 
-                        ${this.getRandomMessage()} 
-                    </p>
+                    <p> ${this.getRandomMessage()} </p>
                     <img src="cid:log" />
                 </div>
             `,
             attachments: [{
-                // filename: '1.png',
-                // path: __dirname + '/images/1.png',
-                // cid: 'log' //same cid value as in the html img src
                 filename: this.data[random],
                 path: __dirname + `/images/${this.data[random]}`,
-                cid: 'log' //same cid value as in the html img src
+                cid: 'log' 
             }]
         }
         var transporter = nodemailer.createTransport({
@@ -62,9 +55,9 @@ class Mailer {
         })
         transporter.sendMail(message, (err,info)=>{
             if(err)
-                console.log(err)
+                console.log("Error appeared", err)
             else
-                console.log(info);
+                console.log("Mail sent", info);
         })
     }
 }
