@@ -32,7 +32,7 @@ class Mailer {
         let random = Math.floor(Math.random() * 5)
         var message = {
             from: this.from,
-            to: this.from,
+            to: this.to,
             subject: `Manju + Raja = JAJU`,
             html: `
                 <div>
