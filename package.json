@@ -10,8 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^6.2.0",
-    "leveldown": "^4.0.1",
-    "levelup": "^4.0.0",
     "moment": "^2.23.0",
     "nodemailer": "^5.0.0"
   }
