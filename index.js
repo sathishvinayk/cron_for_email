@@ -2,7 +2,6 @@ const nodemailer = require('nodemailer');
 const moment = require('moment');
 require('dotenv').config()
 const fs = require('fs');
-const path = require('path');
 var location = "./images"
 var GLOBAL_DATA = [];
 
@@ -36,7 +35,7 @@ class Mailer {
         var message = {
             from: this.from,
             to: this.from,
-            subject: `Manju + Raja = JAJU`,
+            subject: `<b><i>Manju + Raja = JAJU</i></b>`,
             html: `
                 <div>
                     <p> 
@@ -57,7 +56,7 @@ class Mailer {
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: process.env.MAIL_FROM_ID,
+                user: this.from,
                 pass: process.env.MAIL_PASS
             }
         })
@@ -73,4 +72,4 @@ class Mailer {
 setTimeout(() => {
     let mail = new Mailer()
     mail.sendMail()
-},20)
+},50)
