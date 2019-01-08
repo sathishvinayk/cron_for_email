@@ -3,14 +3,25 @@ const moment = require('moment');
 require('dotenv').config()
 const fs = require('fs');
 const path = require('path');
+var location = "./images"
 var GLOBAL_DATA = [];
+
+(function readFile(){
+    fs.readdir(location, function(err, files){
+        if(err) {
+            console.log("error appeard", err)
+        }
+        GLOBAL_DATA = files
+        console.log(GLOBAL_DATA)
+    })
+}())
 
 class Mailer {
     constructor(){
         this.from = process.env.MAIL_FROM_ID,
         this.to = process.env.MAIL_TO_ID
         this.old_date = moment("2018-10-31")
-        this.from = "./images"
+        this.data = GLOBAL_DATA
     }
     getRandomMessage(){ 
         let today = new Date(),
@@ -19,23 +30,13 @@ class Mailer {
         console.log(dif)
         return `Welcome jaju.. Happy Happy Happy morning.. Dont be scared inside... I am near you only... Today is your ${dif}th day... Waiting to hold you in my hands. Come soon`
     }
-    readFile(){
-        fs.readdir(this.from, function(err, files){
-            if(err) {
-                console.log("error appeard", err)
-            }
-            GLOBAL_DATA = files
-            console.log(GLOBAL_DATA)
-        })
-    }
     sendMail(){ 
-        this.readFile()
-        let random = Math.floor((Math.random() * 5) + 1)
+        let random = Math.floor(Math.random() * 6)
+        console.log(this.data[random])
         var message = {
             from: this.from,
-            to: this.to,
+            to: this.from,
             subject: `Manju + Raja = JAJU`,
-            Imagepath : path.join(__dirname, this.from + `/${GLOBAL_DATA[random]}`),
             html: `
                 <div>
                     <p> 
@@ -45,8 +46,11 @@ class Mailer {
                 </div>
             `,
             attachments: [{
-                filename: '1.png',
-                path: __dirname + '/images/1.png',
+                // filename: '1.png',
+                // path: __dirname + '/images/1.png',
+                // cid: 'log' //same cid value as in the html img src
+                filename: this.data[random],
+                path: __dirname + `/images/${this.data[random]}`,
                 cid: 'log' //same cid value as in the html img src
             }]
         }
@@ -66,5 +70,7 @@ class Mailer {
     }
 }
 
-let mail = new Mailer()
-mail.sendMail()
+setTimeout(() => {
+    let mail = new Mailer()
+    mail.sendMail()
+},20)
